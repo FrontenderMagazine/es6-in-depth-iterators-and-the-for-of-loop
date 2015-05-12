@@ -180,13 +180,13 @@ Well, we’re done for today, but we’re _still_ not done with the `for`-`of` l
 
 There is one more new kind of object in ES6 that works beautifully with `for`-`of`. I didn’t mention it because it’s the topic of next week’s post. I think this new feature is the most magical thing in ES6. If you haven’t already encountered it in languages like Python and C#, you’ll probably find it mind-boggling at first. But it’s the easiest way to write an iterator, it’s useful in refactoring, and it might just change the way we write asynchronous code, both in the browser and on the server. So join us next week as we look at ES6 generators in depth.
 
- * [1] https://hacks.mozilla.org/category/es6-in-depth/
- * [2] https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
- * [3] https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/break
- * [4] https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/return
- * [5] https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...in
- * [6] https://developer.mozilla.org/en-US/docs/Glossary/Expando
- * [7] https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of
- * [8] https://developer.mozilla.org/en-US/docs/Web/API/NodeList
- * [9] http://babeljs.io/
- * [10] https://github.com/google/traceur-compiler#what-is-traceur
+ [1]: https://hacks.mozilla.org/category/es6-in-depth/
+ [2]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
+ [3]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/break
+ [4]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/return
+ [5]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...in
+ [6]: https://developer.mozilla.org/en-US/docs/Glossary/Expando
+ [7]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of
+ [8]: https://developer.mozilla.org/en-US/docs/Web/API/NodeList
+ [9]: http://babeljs.io/
+ [10]: https://github.com/google/traceur-compiler#what-is-traceur
