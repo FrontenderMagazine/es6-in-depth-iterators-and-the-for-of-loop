@@ -1,8 +1,11 @@
-# ES6 в деталях: Итераторы и циклы for-of 
+# ES6 в деталях: Итераторы и циклы for-of
 
-_[ES6 в деталях][1] - это цикл статей о новых возможностях языка программирования JavaScript, появившихся в 6 редакции стандарта ECMAScript, кратко - ES6._
+_[ES6 в деталях][1] — это цикл статей о новых возможностях языка
+программирования JavaScript, появившихся в 6 редакции стандарта ECMAScript,
+кратко - ES6._
 
-Как перебрать все элементы массива? Двадцать лет назад, когда JavaScript только появился, мы бы сделали так:
+Как перебрать все элементы массива?
+Двадцать лет назад, когда JavaScript только появился, мы бы сделали так:
 
     for (var index = 0; index < myArray.length; index++) {
         console.log(myArray[index]);
@@ -14,91 +17,128 @@ _[ES6 в деталях][1] - это цикл статей о новых воз�
         console.log(value);
     });
 
-Так немного короче, но есть небольшой недостаток: вы не можете прервать выполнение цикла ключевым словом [`break`][3] или выйти из внешней функции через [`return`][4].
+Так немного короче, но есть небольшой недостаток: нельзя прервать выполнение
+цикла ключевым словом [`break`][3] или выйти из внешней функции через
+[`return`][4].
 
-It sure would be nice if there were just a `for`-loop syntax that looped over array elements.
+Разумеется, было бы хорошо, если бы синтаксис цикла `for` просто позволял
+перебрать все элементы массива.
 
-How about a [`for`-`in`][5] loop?
+Как насчёт цикла [`for`-`in`][5]?
 
-    for (var index in myArray) {    // don't actually do this
+    for (var index in myArray) {    // вообще-то, не стоит так делать
         console.log(myArray[index]);
     }
 
-This is a bad idea for several reasons:
+Это плохое решение, по нескольким причинам:
 
--   The values assigned to `index` in this code are the strings `"0"`, `"1"`, `"2"` and so on, not actual numbers. Since you probably don’t want string arithmetic (`"2" + 1 == "21"`), this is inconvenient at best.
--   The loop body will execute not only for array elements, but also for any other [expando][6] properties someone may have added. For example, if your array has an enumerable property `myArray.name`, then this loop will execute one extra time, with `index == "name"`. Even properties on the array’s prototype chain can be visited.
--   Most astonishing of all, in some circumstances, this code can loop over the array elements in an arbitrary order.
+-   Значения, присваиваемые `index` в этом коде — строки `"0"`, `"1"`, `"2"`
+    и т.д., а не настоящие числа. Вам, наверняка, не хотелось бы иметь дело
+    со строковой арифметикой (`"2" + 1 == "21"`), и поэтому это, по меньшей
+    мере, неудобно.
 
-In short, `for`-`in` was designed to work on plain old `Object`s with string keys. For `Array`s, it’s not so great.
+-   Тело цикла будет выполнено не только для элементов массива, но и для всех
+    [expando][6]-свойств, кем-либо добавленных. К примеру, если в вашем массиве
+    есть перечисляемое свойство `myArray.name`, то этот цикл выполнится один
+    лишний раз, с `index == "name"`. Цикл может пройтись даже по свойствам из
+    цепочки цепочки прототипов массива.
 
-## The mighty for-of loop
+-   Самое изумительное: при некоторых обстоятельствах этот код может обойти
+    элементы массива в произвольном порядке.
 
-Remember last week I promised that ES6 would not break the JS code you’ve already written. Well, millions of Web sites depend on the behavior of `for`-`in`—yes, even its behavior on arrays. So there was never any question of “fixing” `for`-`in` to be more helpful when used with arrays. The only way for ES6 to improve matters was to add some kind of new loop syntax.
+Если кратко, `for`-`in` рассчитан на работу с обычными объектами `Object`
+с именами свойств в виде строк. Для массивов он подходит не так хорошо.
 
-And here it is:
+
+## Могущественный цикл for-of
+
+Помните, на прошлой неделе я обещал, что ES6 не сломает тот код на JS, что вы
+уже написали?
+Вот, миллионы сайтов зависят от поведения `for`-`in`, да, даже от того, как он
+работает с массивами.
+Так что о том, чтобы «поправить» `for`-`in` и сделать его более полезным для
+массивов, не было и речи. Единственный способ, которым ES6 может улучшить
+ситуацию — добавить какой-нибудь новый синтаксис.
+
+И вот так он выглядит:
 
     for (var value of myArray) {
         console.log(value);
     }
 
-Hmm. After all that build-up, it doesn’t seem all that impressive, does it? Well, we’ll see whether [`for`-`of`][7] has any neat tricks up its sleeve. For now, just note that:
+Хмм… После моего интригующего описания вы, наверное, ожидали чего-то более
+впечатляющего?
+Что ж, давайте взглянем, есть ли у [`for`-`of`][7] козырь в рукаве.
+Для начала отметим, что:
 
--   this is the most concise, direct syntax yet for looping through array elements
--   it avoids all the pitfalls of `for`-`in`
--   unlike `forEach()`, it works with `break`, `continue`, and `return`
+-   это самый лаконичный и наглядный синтаксис для перебора элементов массивов;
+-   у него нет недостатков `for`-`in`;
+-   в отличие от `forEach()`, он работает с `break`, `continue` и `return`.
 
-The `for`-*`in`* loop is for looping over object properties.
+Циклы `for`-*`in`* нужны для перебора свойств объекта.
 
-The `for`-*`of`* loop is for looping over _data_—like the values in an array.
+Циклы `for`-*`of`* нужны для перебора _данных_, например, значений массива.
 
-But that’s not all.
+Но это ещё не всё.
 
-## Other collections support for-of too
 
-`for`-`of` is not just for arrays. It also works on most array-like objects, like DOM [`NodeList`][8]s.
+## Использование for-of с другими коллекциями
 
-It also works on strings, treating the string as a sequence of Unicode characters:
+`for`-`of` не только для массивов. Он также работает с большинством
+массивоподобных объектов, вроде списков[`NodeList`][8] в DOM.
+
+Ещё он работает со строками, рассматривая строку как набор символов Unicode:
 
     for (var chr of "😺😲") {
         alert(chr);
     }
 
-It also works on `Map` and `Set` objects.
+Он также работает с объектами `Map` и `Set`.
 
-Oh, I’m sorry. You’ve never heard of `Map` and `Set` objects? Well, they are new in ES6. We’ll do a whole post about them at some point. If you’ve worked with maps and sets in other languages, there won’t be any big surprises.
+Ой, простите. Вы никогда не слышали про объекты `Map` и `Set`? Что ж, они
+появились в ES6. Когда-нибудь мы посвятим им отдельную статью. Если вы уже
+работали со словарями или списками в других языках, то не ожидайте больших
+ничего особенного удивительного.
 
-For example, a `Set` object is good for eliminating duplicates:
+К примеру, объект `Set` хорош для устранения повторяющихся значений:
 
-    // make a set from an array of words
+    // создаём список из массива слов
     var uniqueWords = new Set(words);
 
-Once you’ve got a `Set`, maybe you’d like to loop over its contents. Easy:
+Теперь, когда у вас есть список, возможно, вы захотите перебрать всё его
+содержимое. Легко:
 
     for (var word of uniqueWords) {
         console.log(word);
     }
 
-A `Map` is slightly different: the data inside it is made of key-value pairs, so you’ll want to use _destructuring_ to unpack the key and value into two separate variables:
+С `Map` немного иначе: данные внутри — это пары ключ-значение, так что вам
+пригодится _деструктурирование_ для распаковки ключа и значения в две отдельные
+переменные:
 
     for (var [key, value] of phoneBookMap) {
-        console.log(key + "'s phone number is: " + value);
+        console.log("У " + key + " номер телефона: " + value);
     }
 
-Destructuring is yet another new ES6 feature and a great topic for a future blog post. I should write these down.
+Деструктурирование — это ещё одна возможность, введённая в ES6 и отличная тема
+для будущей статьи. Надо бы записывать, а то забуду.
 
-By now, you get the picture: JS already has quite a few different collection classes, and even more are on the way. `for`-`of` is designed to be the workhorse loop statement you use with all of them.
+Уже сейчас вы можете сложить представление: в JS уже есть немало различных
+классов-коллекций, а скоро появится ещё больше. Циклы `for`-`of` разработаны
+как рабочая лошадка для работы со всеми ними.
 
-`for`-`of` does _not_ work with plain old `Object`s, but if you want to iterate over an object’s properties you can either use `for`-`in` (that’s what it’s for) or the builtin `Object.keys()`:
+`for`-`of` _не_ будет работать с обычными объектами, но если вам нужно перебрать
+все свойства объекта, вы можете использовать или `for`-`in` (для чего он и
+предназначен), или встроенную функцию `Object.keys()`:
 
-    // dump an object's own enumerable properties to the console
+    // сбрасываем все перечислимые свойства объекта в консоль
     for (var key of Object.keys(someObject)) {
         console.log(key + ": " + someObject[key]);
     }
 
-## Under the hood
+## Под капотом
 
-_“Good artists copy, great artists steal.” —Pablo Picasso_
+_«Хорошие художники копируют, великие художники воруют» — Пабло Пикассо_
 
 A running theme in ES6 is that the new features being added to the language didn’t come out of nowhere. Most have been tried and proven useful in other languages.
 
