@@ -140,34 +140,69 @@ _[ES6 в деталях][1] — это цикл статей о новых во�
 
 _«Хорошие художники копируют, великие художники воруют» — Пабло Пикассо_
 
-A running theme in ES6 is that the new features being added to the language didn’t come out of nowhere. Most have been tried and proven useful in other languages.
+Главная особенность ES6 в том, что функциональность, добавляемая в язык,
+не взялась с потолка. Большая часть фич уже прошла испытание и успешно
+зарекомендовала себя в других языках.
 
-The `for`-`of` loop, for example, resembles similar loop statements in C++, Java, C#, and Python. Like them, it works with several different data structures provided by the language and its standard library. But it’s also an extension point in the language.
+К примеру, цикл `for`-`of` напоминает похожие конструкции из C++, Java, C#
+и Python. Подобно ним, он работает с несколькими различными структурами,
+предоставленными самим языком и его стандартной библиотекой. Но это также и
+точка для расширения в языке.
 
-Like the `for`/`foreach` statements in those other languages, *`for`-`of` works entirely in terms of method calls*. What `Array`s, `Map`s, `Set`s, and the other objects we talked about all have in common is that they have an iterator method.
+Так же, как и выражения `for`/`foreach` в этих языках, **работа `for`-`of`
+полностью основана на вызовах методов**. Общее в объектах `Array`, `Map`, `Set`
+и других, о которых мы говорили, то, что у них всех есть метод-итератор.
 
-And there’s another kind of object that can have an iterator method too: _any object you want_.
+И есть другой тип объекта, который может иметь итератор: _любой объект, какой
+вам захочется_.
 
-Just as you can add a `myObject.toString()` method to any object and suddenly JS knows how to convert that object to a string, you can add the `myObject[Symbol.iterator]()` method to any object and suddenly JS will know how to loop over that object.
+Подобно тому, как если добавить метод `myObject.toString()` в любой объект, и
+JS внезапно узнает как приводить этот объект к строке, можно добавить метод
+`myObject[Symbol.iterator]()` в любой объект, и JS внезапно узнает, как
+этот объект использовать для цикла.
 
-For example, suppose you’re using jQuery, and although you’re very fond of `.each()`, you would like jQuery objects to work with `for`-`of` as well. Here’s how to do that:
+К примеру предположим, что вы пользуетесь jQuery, и хотя вам очень нравится
+`.each()`, вам хотелось бы, чтобы `for`-`of` работал и на объектах jQuery.
+Вот, что нужно сделать:
 
-    // Since jQuery objects are array-like,
-    // give them the same iterator method Arrays have
+    // Раз уж объекты jQuery похожи на массивы,
+    // назначим им тот же интератор, что и у массивов
     jQuery.prototype[Symbol.iterator] =
       Array.prototype[Symbol.iterator];
 
-OK, I know what you’re thinking. That `[Symbol.iterator]` syntax seems weird. What is going on there? It has to do with the method’s name. The standard committee could have just called this method `.iterator()`, but then, your existing code might already have some objects with `.iterator()` methods, and that could get pretty confusing. So the standard uses a _symbol_, rather than a string, as the name of this method.
+Хорошо, я знаю, о чём вы думаете. О том, что синтаксис с `[Symbol.iterator]`
+выглядит странно. Почему именно так? Тут дело в имени метода. Комитет стандарта
+мог бы просто назвать метод `.iterator()`, но что если в вашем уже
+существующем коде нашлись бы объекты с методами `.iterator()`, это была бы
+неприятная ситуация. Так что в стандарте применяется _символ_ вместо строки
+в качестве имени метода.
 
-Symbols are new in ES6, and we’ll tell you all about them in—you guessed it—a future blog post. For now, all you need to know is that the standard can define a brand-new symbol, like `Symbol.iterator`, and it’s guaranteed not to conflict with any existing code. The trade-off is that the syntax is a little weird. But it’s a small price to pay for this versatile new feature and excellent backward compatibility.
+Символы появились в ES6, и я расскажу вам всё о них в — вы правильно угадали —
+в одной из следующих статей. Пока что всё, что вам достаточно знать, — это то,
+что в стандарте может появиться новый символ, вроде `Symbol.iterator`, и
+гарантированно не будет конфликта с существующим кодом. Правда, придётся
+смириться с тем, что синтаксис слега странный. Но это не такая большая
+цена за такую мощную новую фичу и отличную обратную совместимость.
 
-An object that has a `[Symbol.iterator]()` method is called _iterable_. In coming weeks, we’ll see that the concept of iterable objects is used throughout the language, not only in `for`-`of` but in the `Map` and `Set` constructors, destructuring assignment, and the new spread operator.
+Объект, у которого есть метод `[Symbol.iterator]()` называется _итерируемым_.
+В ближайшие недели мы рассмотрим, как итерируемые объекты используются во всём
+языке, не только в `for`-`of`, но и в конструкторах `Map` и `Set`,
+деструктурирующем присваивании и в новом операторе распространения
+_(spread operator — прим. перев.)_.
 
-## Iterator objects
 
-Now, there is a chance you will never have to implement an iterator object of your own from scratch. We’ll see why next week. But for completeness, let’s look at what an iterator object looks like. (If you skip this whole section, you’ll mainly be missing crunchy technical details.)
+## Объекты-итераторы
 
-A `for`-`of` loop starts by calling the `[Symbol.iterator]()` method on the collection. This returns a new iterator object. An iterator object can be any object with a `.next()` method; the `for`-`of` loop will call this method repeatedly, once each time through the loop. For example, here’s the simplest iterator object I can think of:
+Есть вероятность, что вам никогда не придётся писать свой собственный итератор
+с нуля. На следующией неделе мы узнаем, почему. Но для полноты давайте всё же
+взглянем на то, как объекты-итераторы выглядят. (Если не станете читать этот
+раздел, то вы пропустите в основном сухие технические подробности.)
+
+Цикл `for`-`of` начинается с вызова метода `[Symbol.iterator]()` на коллекции.
+Он возвращает объект-итератор. Итератором может быть любой объект с методом
+`.next()`, и цикл `for`-`of` будет вызывать этот метод раз за разом, по-одному
+за один проход цикла. Вот к примеру самый простой итератор, который я смог
+придумать:
 
     var zeroesForeverIterator = {
         [Symbol.iterator]: function () {
@@ -178,31 +213,51 @@ A `for`-`of` loop starts by calling the `[Symbol.iterator]()` method on the coll
         }
     };
 
-Every time this `.next()` method is called, it returns the same result, telling the `for`-`of` loop (a) we’re not done iterating yet; and (b) the next value is `0`. This means that `for (value of zeroesForeverIterator) {}` will be an infinite loop. Of course, a typical iterator will not be quite this trivial.
+Всякий раз, как метод `.next()` вызывается, он возвращает один и тот же
+результат, говоря циклу `for`-`of`, что: (а.) мы ещё не закончили
+с итерированием, (б.) следующее значение — `0`.
+Это означает, что `for (value of zeroesForeverIterator) {}` будет бесконечным
+циклом. Разумеется, типичный итератор не будет таким тривиальным.
 
-This iterator design, with its `.done` and `.value` properties, is superficially different from how iterators work in other languages. In Java, iterators have separate `.hasNext()` and `.next()` methods. In Python, they have a single `.next()` method that throws `StopIteration` when there are no more values. But all three designs are fundamentally returning the same information.
+Такой подход к итераторам, со свойствами `.done` and `.value`, внешне отличается
+от того, как работают итераторы в других языках. В Java у итераторов есть
+отдельные методы `.hasNext()` и `.next()`. В Python есть только один метод
+`.next()`, который бросает исключение `StopIteration`, когда значения
+заканчиваются. Но все эти три подхода принципиально одинаковы и возвращают
+одну и ту же информацию.
 
-An iterator object can also implement optional `.return()` and `.throw(exc)` methods. The `for`-`of` loop calls `.return()` if the loop exits prematurely, due to an exception or a `break` or `return` statement. The iterator can implement `.return()` if it needs to do some cleanup or free up resources it was using. Most iterator objects won’t need to implement it. `.throw(exc)` is even more of a special case: `for`-`of` never calls it at all. But we’ll hear more about it next week.
+В итераторе может также быть реализованы необязательные методы `.return()` и
+`.throw(exc)`. Цикл `for`-`of` вызывает `.return()` если цикл закончился
+досрочно, из-за брошенного исключения или ключевых слов `break` или `return`.
+Реализовывать метод `.return()` у итератора имеет смысл, если нужно сделать
+очистку или освободить используемые ресурсы. Большинству итераторов реализация
+этого метода не понадобится. `.throw(exc)` — ещё более особый случай, `for`-`of`
+вообще никогда его не вызывает. Но мы ещё услышим о нём на следующей неделе.
 
-Now that we have all the details, we can take a simple `for`-`of` loop and rewrite it in terms of the underlying method calls.
+Теперь, когда мы знаем все детали, мы можем взять простой цикл `for`-`of` и
+переписать его с точки зрения низкоуровневых вызовов методов.
 
-First the `for`-`of` loop:
+Сначала цикл `for`-`of`:
 
-    for (VAR of ITERABLE) {
-        STATEMENTS
+    for (ПЕРЕМЕННАЯ of ИТЕРИРУЕМЫЙ) {
+        ВЫРАЖЕНИЯ
     }
 
-Here is a rough equivalent, using the underlying methods and a few temporary variables:
+Вот примерный эквивалент с использованием низкоуровневых методов и нескольких
+временных переменных:
 
-    var $iterator = ITERABLE[Symbol.iterator]();
-    var $result = $iterator.next();
-    while (!result.done) {
-        VAR = result.value;
-        STATEMENTS
-        $result = $iterator.next();
+    var $итератор = ИТЕРИРУЕМЫЙ[Symbol.iterator]();
+    var $результат = $итератор.next();
+    while (!$результат.done) {
+        ПЕРЕМЕННАЯ = $результат.value;
+        ВЫРАЖЕНИЯ
+        $результат = $итератор.next();
     }
 
-This code doesn’t show how `.return()` is handled. We could add that, but I think it would obscure what’s going on rather than illuminate it. `for`-`of` is easy to use, but there is a lot going on behind the scenes.
+Этот код не показывает то, как обрабатывается `.return()`. Мы могли бы и его
+добавить, но мне кажется, что это запутало бы код вместо того, чтобы его
+иллюстрировать. `for`-`of` легко использовать, много чего происходит за
+кулисами.
 
 ## When can I start using this?
 
