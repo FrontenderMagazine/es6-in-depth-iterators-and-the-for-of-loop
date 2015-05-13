@@ -1,20 +1,20 @@
-# ES6 In Depth: Iterators and the for-of loop
+# ES6 в деталях: Итераторы и циклы for-of 
 
-_[ES6 In Depth][1] is a series on new features being added to the JavaScript programming language in the 6th Edition of the ECMAScript standard, ES6 for short._
+_[ES6 в деталях][1] - это цикл статей о новых возможностях языка программирования JavaScript, появившихся в 6 редакции стандарта ECMAScript, кратко - ES6._
 
-How do you loop over the elements of an array? When JavaScript was introduced, twenty years ago, you would do it like this:
+Как перебрать все элементы массива? Двадцать лет назад, когда JavaScript только появился, мы бы сделали так:
 
     for (var index = 0; index < myArray.length; index++) {
         console.log(myArray[index]);
     }
 
-Since ES5, you can use the built-in [`forEach`][2] method:
+Начиная с ES5, можно воспользоваться встроенным методом [`forEach`][2]:
 
     myArray.forEach(function (value) {
         console.log(value);
     });
 
-This is a little shorter, but there is one minor drawback: you can’t break out of this loop using a [`break`][3] statement or return from the enclosing function using a [`return`][4] statement.
+Так немного короче, но есть небольшой недостаток: вы не можете прервать выполнение цикла ключевым словом [`break`][3] или выйти из внешней функции через [`return`][4].
 
 It sure would be nice if there were just a `for`-loop syntax that looped over array elements.
 
