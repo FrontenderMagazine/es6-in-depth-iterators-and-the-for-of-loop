@@ -259,21 +259,41 @@ _(spread operator — прим. перев.)_.
 иллюстрировать. `for`-`of` легко использовать, много чего происходит за
 кулисами.
 
-## When can I start using this?
 
-The `for`-`of` loop is supported in all current Firefox releases. It’s supported in Chrome if you go to `chrome://flags` and enable “Experimental JavaScript”. It also works in Microsoft’s Spartan browser, but not in shipping versions of IE. If you’d like to use this new syntax on the web, but you need to support IE and Safari, you can use a compiler like [Babel][9] or Google’s [Traceur][10] to translate your ES6 code to Web-friendly ES5.
+## Когда можно начинать этим пользоваться?
 
-On the server, you don’t need a compiler—you can start using `for`-`of` in io.js (and Node, with the `--harmony` option) today.
+Цикл `for`-`of` поддерживается во всех текущих версиях Firefox.
+Он есть в Chrome, он чтобы был доступен, нужно открыть `chrome://flags` и
+включить «Эспериментальный JavaScript».
+Он также работает в браузере Spartan _(он же Egde — прим. перев.)_ от Microsoft,
+но его нет ни в одной версии Internet Explorer.
+Если вы хотите пользоваться этим новым синтаксисом, но вам нужно поддерживать
+IE или Safari, вы можете воспользоваться компилятором вроде [Babel][9] или
+[Traceur][10] от Google, чтобы транслировать ваш код ES6 в ES5, который
+поддерживают все браузеры.
 
-(*UPDATE:* This previously neglected to mention that `for`-`of` is disabled by default in Chrome. Thanks to Oleg for pointing out the mistake in the comments.)
+На серверной стороне вам не нужен компилятор, просто используйте `for`-`of` в
+io.js (или Node, с флагом `--harmony`) уже сейчас.
+
+(_ОБНОВЛЕНИЕ:_ Я поначалу забыл упомянуть, что `for`-`of` по умолчанию выключен
+в Chrome. Спасибо Олегу за то, что указал мне на ошибку в комментариях.)
+
 
 ## `{done: true}`
 
-Whew!
+Фу-уф!
 
-Well, we’re done for today, but we’re _still_ not done with the `for`-`of` loop.
+Ну, на сегодня это всё, но мы _всё ещё_ не закончили с циклом `for`-`of`.
 
-There is one more new kind of object in ES6 that works beautifully with `for`-`of`. I didn’t mention it because it’s the topic of next week’s post. I think this new feature is the most magical thing in ES6. If you haven’t already encountered it in languages like Python and C#, you’ll probably find it mind-boggling at first. But it’s the easiest way to write an iterator, it’s useful in refactoring, and it might just change the way we write asynchronous code, both in the browser and on the server. So join us next week as we look at ES6 generators in depth.
+Есть ещё один вид объектов в ES6, который великолепно работает с `for`-`of`.
+Я не упоминал его, потому что он будет темой статьи на следующей неделе.
+Я считаю, что эта фича — одна из самых замечательных вещей в ES6.
+Если вы ещё не работали с ней в языках вроде Python и C#, возможно, поначалу
+она ввергнет вас в ступор. Но это самый простой способ написать итератор, эта
+фича полезна при рефакторинге и может изменить подход к написанию асинхронного
+кода, как в браузерах, так и на серверной стороне.
+Так что, присоединяйтесь к нам на следующей неделе и мы посмотрим на генераторы
+ES6 в деталях.
 
  [1]: https://hacks.mozilla.org/category/es6-in-depth/
  [2]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
